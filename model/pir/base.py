@@ -13,14 +13,10 @@ class PIR(ABC):
     implementation is fine for plain string fields.
     """
 
-    # Process-global id counter for newly-created PIRs.  Bumped past the
-    # highest id seen via :meth:`_bump_id_counter` so loaded records don't
-    # collide with freshly-created ones.
+    # Process-global id counter for newly-created PIRs.
     _next_id: int = 1
 
-    # Subclasses override this with the canonical type name persisted into
-    # ``.pim`` files.  Using a class attribute keeps :meth:`to_dict` /
-    # :meth:`from_dict` symmetric and avoids reflection.
+    # Subclasses override this with the canonical type name persisted into ``.pim`` files.
     TYPE_NAME: str = "pir"
 
     def __init__(self, pir_id: Optional[int] = None) -> None:
@@ -40,15 +36,13 @@ class PIR(ABC):
 
     @classmethod
     def _bump_id_counter(cls, loaded_id: int) -> None:
-        """Move the global id counter past ``loaded_id`` if it isn't
-        already."""
+        """Move the global id counter past ``loaded_id`` if it isn't already."""
         if loaded_id >= PIR._next_id:
             PIR._next_id = loaded_id + 1
 
     @classmethod
     def reset_id_counter(cls, start: int = 1) -> None:
-        """Reset the process-global id counter.  Intended for unit tests so
-        that test runs are deterministic and independent of each other."""
+        """Reset the process-global id counter."""
         PIR._next_id = max(1, start)
 
     # -- type -------------------------------------------------------------
@@ -59,22 +53,14 @@ class PIR(ABC):
 
     # -- field protocol ---------------------------------------------------
     @classmethod
-    @abstractmethod
     def field_names(cls) -> tuple:
-        """Return the tuple of field names exposed by this PIR type.  Used by
-        the criterion layer to validate field references at parse time and
-        by the CLI to render editable field lists."""
-        raise NotImplementedError
+        """Return the tuple of field names exposed by this PIR type."""
+        return cls._FIELDS
 
     @classmethod
     def field_kinds(cls) -> Dict[str, str]:
         """Return a mapping ``field_name -> kind`` where ``kind`` is one of
-        ``"text"`` or ``"time"``.  Used by the criterion layer to know which
-        operators are valid for each field without instantiating the PIR
-        (which would yield ``None`` defaults that look like text).  The
-        default implementation looks at the class-level ``_FIELD_KINDS``
-        attribute; subclasses set that attribute at class scope.
-        """
+        ``"text"`` or ``"time"``."""
         return dict(getattr(cls, "_FIELD_KINDS", {}))
 
     @abstractmethod

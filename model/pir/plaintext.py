@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import datetime
 from typing import Any, Dict, Optional
 from ..exceptions import InvalidFieldValueError, UnknownFieldError
 from .base import PIR, _register_pir_class
@@ -18,10 +17,6 @@ class PlainText(PIR):
         if not isinstance(text, str):
             raise InvalidFieldValueError("text", text, "string")
         self._text = text
-
-    @classmethod
-    def field_names(cls) -> tuple:
-        return cls._FIELDS
 
     def get_field(self, name: str) -> Any:
         if name == "text":

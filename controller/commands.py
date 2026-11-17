@@ -18,27 +18,17 @@ easy to test.
 
 from __future__ import annotations
 
-from typing import Callable, Dict, List, Optional
+from typing import Callable, Dict, Optional
 
 from model import (
     Criterion,
     PIMModelError,
     PIMStorage,
-    PIR,
     PIRRepository,
-    all_pir_types,
-    known_type_names,
 )
 from model.pir import Contact, Event, PlainText, Task
 from model.exceptions import (
-    CriterionSyntaxError,
-    DuplicatePIRIdError,
-    InvalidFileExtensionError,
-    InvalidFieldValueError,
-    PIRNotFoundError,
-    StorageCorruptionError,
     UnknownFieldError,
-    UnknownPIRTypeError,
 )
 
 from .parser import ParsedCommand, TokenizerError

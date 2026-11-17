@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import datetime
 from typing import Any, Dict, Optional
 from ..exceptions import InvalidFieldValueError, UnknownFieldError
 from .base import PIR, _register_pir_class
@@ -36,10 +35,6 @@ class Contact(PIR):
         self._name = name
         self._address = address
         self._mobile = mobile
-
-    @classmethod
-    def field_names(cls) -> tuple:
-        return cls._FIELDS
 
     def get_field(self, name: str) -> Any:
         if name == "name":
