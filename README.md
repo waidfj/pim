@@ -15,6 +15,14 @@ flexible boolean criterion DSL. PIRs can be saved to / loaded from a
 
 ## Quick Start
 
+To download the project run the following command on your machine
+
+```bash
+git clone git@github.com:waidfj/pim.git
+```
+
+Or go to https://github.com/waidfj/pim and download the code
+
 ```bash
 cd PIM_System
 python3 pim.py
