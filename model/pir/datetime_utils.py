@@ -3,6 +3,9 @@ from __future__ import annotations
 import datetime
 from ..exceptions import InvalidFieldValueError
 
+from typing import Any, Optional
+
+
 _DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
 def parse_datetime(value: str) -> datetime.datetime:
     """Parse a strict ISO-ish datetime string ``YYYY-MM-DDTHH:MM:SS``.
@@ -20,7 +23,17 @@ def parse_datetime(value: str) -> datetime.datetime:
         raise InvalidFieldValueError(
             "(inline)", value, f"ISO datetime ({_DATETIME_FORMAT})"
         ) from exc
+    
 def format_datetime(value: datetime.datetime) -> str:
     """Render a :class:`~datetime.datetime` back into the canonical string
     form used everywhere in the system."""
     return value.strftime(_DATETIME_FORMAT)
+
+def _coerce_time(value: Any, fieldname: str) -> Optional[datetime.datetime]:
+    if value is None or value == "":
+        return None
+    if isinstance(value, datetime.datetime):
+        return value
+    if isinstance(value, str):
+        return parse_datetime(value)
+    raise InvalidFieldValueError(fieldname, value, "ISO datetime")

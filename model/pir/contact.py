@@ -37,10 +37,6 @@ class Contact(PIR):
         self._address = address
         self._mobile = mobile
 
-    @classmethod
-    def field_names(cls) -> tuple:
-        return cls._FIELDS
-
     def get_field(self, name: str) -> Any:
         if name == "name":
             return self._name

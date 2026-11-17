@@ -19,10 +19,6 @@ class PlainText(PIR):
             raise InvalidFieldValueError("text", text, "string")
         self._text = text
 
-    @classmethod
-    def field_names(cls) -> tuple:
-        return cls._FIELDS
-
     def get_field(self, name: str) -> Any:
         if name == "text":
             return self._text

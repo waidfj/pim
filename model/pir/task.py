@@ -4,7 +4,7 @@ import datetime
 from typing import Any, Dict, Optional
 from ..exceptions import InvalidFieldValueError, UnknownFieldError
 from .base import PIR, _register_pir_class
-from .datetime_utils import format_datetime, parse_datetime
+from .datetime_utils import _coerce_time, format_datetime, parse_datetime
 
 @_register_pir_class
 class Task(PIR):
@@ -33,17 +33,7 @@ class Task(PIR):
 
     @staticmethod
     def _coerce_deadline(value: Any) -> Optional[datetime.datetime]:
-        if value is None or value == "":
-            return None
-        if isinstance(value, datetime.datetime):
-            return value
-        if isinstance(value, str):
-            return parse_datetime(value)
-        raise InvalidFieldValueError("deadline", value, "ISO datetime")
-
-    @classmethod
-    def field_names(cls) -> tuple:
-        return cls._FIELDS
+        return _coerce_time(value, "deadline")
 
     def get_field(self, name: str) -> Any:
         if name == "description":
