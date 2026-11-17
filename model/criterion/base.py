@@ -1,4 +1,5 @@
 from __future__ import annotations
+from abc import abstractmethod
 
 from ..exceptions import CriterionSyntaxError
 from ..pir import PIR
@@ -11,6 +12,7 @@ class Criterion:
     criteria programmatically too; the DSL is just a thin textual front-end.
     """
 
+    @abstractmethod
     def matches(self, pir: PIR) -> bool:  # pragma: no cover - abstract
         raise NotImplementedError
 
@@ -31,6 +33,3 @@ class Criterion:
     # Display ------------------------------------------------------------
     def __str__(self) -> str:  # pragma: no cover - abstract
         raise NotImplementedError
-
-from .parser import _CriterionParser
-from .tokenizer import _tokenize
