@@ -7,8 +7,7 @@ from typing import IO, List, Optional
 
 
 class Reporter:
-    """Abstract output sink.  The controller writes to a Reporter; tests can
-    pass a custom reporter that captures output for assertions."""
+    """Abstract output sink."""
 
     def write(self, text: str) -> None:  # pragma: no cover - abstract
         raise NotImplementedError
@@ -18,8 +17,7 @@ class Reporter:
 
 
 class PrintReporter(Reporter):
-    """Concrete reporter that writes to an IO stream (defaults to
-    ``sys.stdout``).  Suitable for the real CLI run."""
+    """Concrete reporter that writes to an IO stream (defaults to ``sys.stdout``)."""
 
     def __init__(self, stream: Optional[IO[str]] = None) -> None:
         self._stream = stream if stream is not None else sys.stdout
@@ -30,8 +28,8 @@ class PrintReporter(Reporter):
 
 
 class InMemoryReporter(Reporter):
-    """Reporter that buffers all output in memory for inspection.  Used by
-    the unit tests for the controller."""
+    """Reporter that buffers all output in memory for inspection.  Created
+    specifically for the unit tests."""
 
     def __init__(self) -> None:
         self._buffer: List[str] = []
