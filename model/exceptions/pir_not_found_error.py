@@ -4,8 +4,7 @@ from .pim_model_error import PIMModelError
 
 
 class PIRNotFoundError(PIMModelError):
-    """Raised when a PIR with a given id cannot be located in the
-    repository."""
+    """Raised when a PIR with a given id cannot be located in the repository."""
 
     def __init__(self, pir_id: int):
         super().__init__(f"No PIR with id {pir_id}")
