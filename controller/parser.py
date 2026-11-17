@@ -27,34 +27,12 @@ from __future__ import annotations
 
 from typing import Dict, List, Tuple
 
+from .parsed_command import ParsedCommand
+
 
 class TokenizerError(ValueError):
     """Raised when the input line cannot be tokenised (e.g. an unterminated
     quoted string)."""
-
-
-class ParsedCommand:
-    """The structured form of a single input line."""
-
-    __slots__ = ("verb", "positionals", "kwargs", "raw")
-
-    def __init__(
-        self,
-        verb: str,
-        positionals: List[str],
-        kwargs: Dict[str, str],
-        raw: str,
-    ) -> None:
-        self.verb = verb
-        self.positionals = positionals
-        self.kwargs = kwargs
-        self.raw = raw
-
-    def __repr__(self) -> str:  # pragma: no cover - debug helper
-        return (
-            f"ParsedCommand(verb={self.verb!r}, "
-            f"positionals={self.positionals!r}, kwargs={self.kwargs!r})"
-        )
 
 
 class CommandTokenizer:
