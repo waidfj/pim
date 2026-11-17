@@ -17,6 +17,7 @@ Model-View-Controller dependency rule.
 
 from .cli import REPL
 from .commands import CommandDispatcher
+from .parsed_command import ParsedCommand
 from .parser import CommandTokenizer, ParsedCommand, TokenizerError
 
 __all__ = [

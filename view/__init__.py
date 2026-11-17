@@ -7,6 +7,8 @@ stay focused on parsing and dispatching commands, and the model can stay
 purely about data and behaviour.
 """
 
-from .formatter import Formatter, PrintReporter, Reporter
+from .formatter import Formatter
+from .reporter import PrintReporter, Reporter
 
 __all__ = ["Formatter", "Reporter", "PrintReporter"]
+from .reporter import InMemoryReporter

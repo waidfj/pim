@@ -1,28 +1,11 @@
-"""Output formatting for the PIM CLI.
-
-:class:`Formatter` knows how to render PIRs and search results as plain
-text.  :class:`Reporter` is the abstract sink that the controller writes to
-(e.g. stdout, an in-memory buffer for tests).  :class:`PrintReporter` is
-the concrete reporter that prints to ``sys.stdout``.
-
-Keeping formatting here means the controller never has to know how a PIR is
-laid out, only *which* PIR it wants to show.  This separation also makes it
-trivial to swap a terminal renderer for a future GUI/web view without
-touching the controller.
-"""
+"""Output formatting for the PIM CLI."""
 
 from __future__ import annotations
 
-import sys
-from typing import IO, Iterable, List, Optional
+from typing import Iterable
 
-from model import PIR, PIRRepository, parse_datetime, format_datetime
-from model.pir import (
-    Contact,
-    Event,
-    PlainText,
-    Task,
-)
+from model import PIR, PIRRepository, format_datetime
+from model.pir import Contact, Event, PlainText, Task
 
 
 class Formatter:
@@ -176,48 +159,3 @@ def _truncate(s: str, max_len: int = 60) -> str:
     if len(s) <= max_len:
         return s
     return s[: max_len - 1] + "..."
-
-
-# ---------------------------------------------------------------------------
-# Output sink abstraction
-# ---------------------------------------------------------------------------
-class Reporter:
-    """Abstract output sink.  The controller writes to a Reporter; tests can
-    pass a custom reporter that captures output for assertions."""
-
-    def write(self, text: str) -> None:  # pragma: no cover - abstract
-        raise NotImplementedError
-
-    def write_line(self, text: str = "") -> None:
-        self.write(text + "\n")
-
-
-class PrintReporter(Reporter):
-    """Concrete reporter that writes to an IO stream (defaults to
-    ``sys.stdout``).  Suitable for the real CLI run."""
-
-    def __init__(self, stream: Optional[IO[str]] = None) -> None:
-        self._stream = stream if stream is not None else sys.stdout
-
-    def write(self, text: str) -> None:
-        self._stream.write(text)
-        self._stream.flush()
-
-
-class InMemoryReporter(Reporter):
-    """Reporter that buffers all output in memory for inspection.  Used by
-    the unit tests for the controller."""
-
-    def __init__(self) -> None:
-        self._buffer: List[str] = []
-
-    def write(self, text: str) -> None:
-        self._buffer.append(text)
-
-    @property
-    def text(self) -> str:
-        return "".join(self._buffer)
-
-    @property
-    def lines(self) -> List[str]:
-        return self.text.split("\n")
